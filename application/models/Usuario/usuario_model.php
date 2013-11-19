@@ -18,6 +18,23 @@ class usuario_model extends CI_Model {
 		$query = $this->db->query("exec spi_usuario '".$data['usuario']."','".$data['pass']."','".$data['id']."',".$data['tipo']);
 		return $query->row();
 	}
+
+
+	function one($id, $tipo)
+	{
+		$query = $this->db->query("exec spf_usuario_bytipoid '".$id."', ".$tipo);
+
+		return $query->result();
+	}
+
+	//funcion cambiar usuario
+
+	function update($data)
+	{
+		$query = $this->db->query("exec spu_usuario '".$data['id']."','".$data['usuario']."','".$data['pass']."','".$data['estado']."'");
+
+		return $query->row();
+	}
 	
 }
 

@@ -57,8 +57,49 @@ class usuario extends CI_Controller {
 			}
 			endif;
 		}else{
-			redirect(base_url().'seccion/', 'refresh');
+			redirect(base_url().'usuario/', 'refresh');
 		}
 	}
 	
+	function buscar_id(){
+		if($this->input->is_ajax_request()){
+			$id = $this->input->post('id',true);
+			$tipo = $this->input->post('tipo', true);
+
+			$rs = $this->usu->one($id, $tipo);
+
+			echo json_encode($rs);
+		}else{
+			redirect(base_url().'usuario/', 'refresh');
+		}
+	}
+
+	function editar()
+	{
+		if($this->input->is_ajax_request()){
+			
+
+			if($_POST['nombreE']!="" && $_POST['passwordE']!="" && $_POST['confpassE']!="" &&
+			 $_POST['passwordE']== $_POST['confpassE'] ){
+				$usuario = array(
+						'usuario' => $this->input->post('nombreE',true),
+						'pass' => $this->input->post('passwordE',true),
+						'id' => $this->input->post('idusuario',true),
+						'estado' => $this->input->post('selectEst',true)
+				);
+				$rs=$this->usu->update($usuario);
+				if($rs)
+				{
+					echo "guardo";
+				}else{
+					echo "no guardo";
+				}	
+			}else{
+				echo "no guardo";
+			}
+	;
+		}else{
+			redirect(base_url().'usuario/', 'refresh');
+		}
+	}
 }

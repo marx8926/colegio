@@ -73,7 +73,7 @@
                                                         <?php }
                                                             else
                                                         { ?>
-                                                            <a data-toggle="modal" class="btn btn-info"><i></i>Editar</a>
+                                                            <a onclick="editarUsuario('<?php echo $lu->id; ?>', <?php echo $lu->tipo; ?>)" data-toggle="modal" class="btn btn-info"><i></i>Editar</a>
                                                         <?php }
 
                                                     ?>
@@ -154,7 +154,7 @@
                 <button data-dismiss="modal" class="close" type="button">&times;</button>
                 <h3 align="center">EDITAR USUARIO</h3>
             </div>
-            <form action="" class="form-horizontal">
+            <form action="" class="form-horizontal" id="editarUsuarioForm" name="editarUsuarioForm" method="post">
                 <div class="modal-body">
                     <fieldset>
                               <div class="row-fluid">
@@ -164,6 +164,11 @@
                                 <div class="muted pull-left"></div>
                                 <a class="btn" href="#modalRegistrarDocente" data-toggle="modal" style="float: right;"><i class="icon-plus"></i></a>
                             </div>-->
+
+                            <input type="hidden" id="idtabla" name="idtabla"> 
+                            <input type="hidden" id="tipotabla" name="tipotabla">
+                            <input type="hidden" id="idusuario" name="idusuario">
+
                             <div class="block-content collapse in">
                                 <ul class="nav nav-tabs">
                                     <li class="active">
@@ -180,21 +185,21 @@
                                               <div class="control-group">
                                 <label class="control-label" for="nombre">Usuario</label>
                                 <div class="controls">
-                                    <input class="input-large" id="nombre" name="nombre" type="text">
+                                    <input class="input-large" id="nombreE" name="nombreE" type="text">
                                 </div>
                             </div>
                             
                              <div class="control-group">
                                 <label class="control-label" for="password">Password</label>
                                 <div class="controls">
-                                    <input class="input-large" id="password" name="password" type="text">
+                                    <input class="input-large" id="passwordE" name="passwordE" type="password">
                                 </div>
                             </div>
                             
                             <div class="control-group">
-                                <label class="control-label" for="ConfPass">Confirmar Password</label>
+                                <label class="control-label" for="confpassE">Confirmar Password</label>
                                 <div class="controls">
-                                    <input class="input-large" id="ConfPass" name="ConfPass" type="text">
+                                    <input class="input-large" id="confpassE" name="confpassE" type="password">
                                 </div>
                             </div>
                                                         
@@ -204,10 +209,9 @@
                                 <label class="control-label" for="selectEst">Estado</label>
                                 <div class="controls">
                                     <select id="selectEst" name="selectEst" class="input-large">
-                                        <option></option>
-                                        <option></option>
-                                        <option></option>
-                                        <option></option>
+                                        <option value='1'>Activo</option>
+                                        <option value='0'> Inactivo</option>
+                                       
                                     </select>
                                 </div>
                             </div>
@@ -296,7 +300,7 @@
                     </fieldset>
                 </div>
                 <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-primary" type="submit">Guardar</button>
+                    <button data-dismiss="modal" class="btn btn-primary" id="btnEditar">Guardar</button>
 					<a class="btn" href="#">Cancelar</a>
                     <!--<a data-dismiss="modal" class="btn" href="#">Cancelar</a>-->
                 </div>
@@ -340,28 +344,87 @@
                     $("#modalCrearUsuario").modal('show');
             }
 
+            function editarUsuario(id, tipo)
+            {
+                $("#idtabla").val(id);
+                $("#tipotabla").val(tipo);
+
+
+                $.ajax({
+                    url:'<?php echo $ruta;?>'+'usuario/buscar_id',
+                    type: 'POST',
+                    dataType: "json",
+                    data: "id="+id+"&tipo="+tipo,
+                    success:function(msj){
+
+                        jQuery.each(msj,function(key, value){
+                            $("#idusuario").val(value['id']);
+                            $("#nombreE").val(value['usuario']);
+                            $("#passwordE").val(value['password']);
+                            $("#confpassE").val(value['password']);
+
+                            $("#selectEst").val(value['estado'])
+                        });
+                        $("#modalEditarUsuario").modal('show');
+                    }
+                });
+
+                return false;
+
+            }
+
+            $("#btnRegistrar").click(function(e){
+                     e.preventDefault();
+ 
+                     $.ajax({
+                         url:'<?php echo $ruta;?>usuario/registrar',
+                         type: 'POST',
+                         data: $('#usuarioform').serialize(),
+                         success:function(msj){
+                         if(msj == 'guardo'){
+                             $("#OK").modal('show');
+                            document.getElementById("userTypehidden").value="";
+                             $("#userIdhidden").val("");
+ 
+                         }else{
+                             $("#NO").modal('show');
+                         }
+                     }
+                    });
+            });
+
+            $("#btnEditar").click(function(e){
+                     e.preventDefault();
+ 
+                     $.ajax({
+                         url:'<?php echo $ruta;?>usuario/editar',
+                         type: 'POST',
+                         data: $('#editarUsuarioForm').serialize(),
+                         success:function(msj){
+                         if(msj == 'guardo'){
+                             $("#OK").modal('show');
+
+                             $("#idtabla").val("");
+                            $("#tipotabla").val("");
+                             $("#userIdhidden").val("");
+                             $("#idusuario").val("");
+                            $("#nombreE").val("");
+                            $("#passwordE").val("");
+                            $("#confpassE").val("");
+
+                            $("#selectEst").val("")
+ 
+                         }else{
+                             $("#NO").modal('show');
+                         }
+                     }
+                    });
+            });
+
+
             $(document).ready(function(){
 
 
-                 $("#btnRegistrar").click(function(e){
-                    e.preventDefault();
-
-                    $.ajax({
-                        url:'<?php echo $ruta;?>usuario/registrar',
-                        type: 'POST',
-                        data: $('#usuarioform').serialize(),
-                        success:function(msj){
-                        if(msj == 'guardo'){
-                            $("#OK").modal('show');
-                            document.getElementById("userTypehidden").value="";
-                            $("#userIdhidden").val("");
-
-                        }else{
-                            $("#NO").modal('show');
-                        }
-                }
-            });
-        });
             });
         </script>
     </body>
