@@ -21,5 +21,44 @@ class usuario extends CI_Controller {
 		$this->load->view("menu/template",$dataCuerpo);
 
 	}
+
+	function registrar()
+	{
+
+
+		if($this->input->is_ajax_request()){
+			$this->form_validation->set_rules('userIdhidden','userIdhidden','requiered');
+			$this->form_validation->set_rules('userTypehidden','userTypehidden','requiered');
+			$this->form_validation->set_rules('nombre','nombre','requiered');
+			$this->form_validation->set_rules('password','password','requiered');
+			$this->form_validation->set_rules('Conf_pass','Conf_pass', 'requiered');
+
+
+			if($this->form_validation->run() == false):
+				echo "no guardo";
+			else:
+			if($_POST['nombre']!="" && $_POST['password']!="" && $_POST['Conf_pass']!="" &&
+			 $_POST['password']== $_POST['Conf_pass'] ){
+				$usuario = array(
+						'usuario' => $this->input->post('nombre',true),
+						'pass' => $this->input->post('password',true),
+						'id' => $this->input->post('userIdhidden',true),
+						'tipo' => $this->input->post('userTypehidden',true)
+				);
+				$rs=$this->usu->insert($usuario);
+				if($rs)
+				{
+					echo "guardo";
+				}else{
+					echo "no guardo";
+				}	
+			}else{
+				echo "no guardo";
+			}
+			endif;
+		}else{
+			redirect(base_url().'seccion/', 'refresh');
+		}
+	}
 	
 }

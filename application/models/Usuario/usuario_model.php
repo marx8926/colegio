@@ -13,11 +13,12 @@ class usuario_model extends CI_Model {
 		return $query_udp->result();
 	}
 	//esto hice yoo
-	/**function insert(){
-		$query = $this->db->query("exec spi_usuario '".$data['name']."',".$data['pass'].",".$data['ciclo'].",".$data['nivel']);
+	function insert($data){
+
+		$query = $this->db->query("exec spi_usuario '".$data['usuario']."','".$data['pass']."','".$data['id']."',".$data['tipo']);
 		return $query->row();
 	}
-	**/
+	
 }
 
 ?>

@@ -49,7 +49,7 @@
                                             <tr>
                                                 <th>Id</th>
                                                 <th>Nombres y Apellidos</th>
-                                                
+                                                <th> Tipo </th>
                                                 
                                                 <th>Acciones</th>
                                             </tr>
@@ -61,15 +61,19 @@
                                             <tr class="odd gradeX">
                                                 <td><?php echo $lu->id; ?></td>
                                                 <td><?php echo $lu->nombre." ". $lu->apellido; ?></td>
+                                                <td> <?php if($lu->tipo == 1)
+                                                    echo "Alumno";
+                                                    else echo "Trabajador";
+                                                ?> </td>
                                                 <td>
-                                                    <?php if($lu->ExisteUsuario ==1)
+                                                    <?php if($lu->ExisteUsuario ==0)
                                                         { ?>
-                                                           <a href="#modalCrearUsuario" data-toggle="modal" class="btn btn-success"><i></i>Crear Usuario</a>
+                                                           <a  data-toggle="modal" onclick="registrarUsuario('<?php echo $lu->id;?>', <?php echo $lu->tipo;?>)" class="btn btn-success"><i></i>Crear Usuario</a>
                                                            
                                                         <?php }
                                                             else
                                                         { ?>
-                                                            <a href="#modalEditarUsuario" data-toggle="modal" class="btn btn-info"><i></i>Editar</a>
+                                                            <a data-toggle="modal" class="btn btn-info"><i></i>Editar</a>
                                                         <?php }
 
                                                     ?>
@@ -98,8 +102,11 @@
                 <button data-dismiss="modal" class="close" type="button">&times;</button>
                 <h3 align="center">REGISTRAR USUARIO</h3>
             </div>
-            <form action="" class="form-horizontal">
+            <form action="" class="form-horizontal" id="usuarioform" name="usuarioform" method="post">
                 <div class="modal-body">
+                    <input type="hidden" id="userIdhidden" name="userIdhidden">
+                    <input type="hidden" id="userTypehidden" name="userTypehidden">
+
                     <fieldset>
                         <div class="span5" style="margin-left:0; width:450px;">
                             <div class="control-group">
@@ -135,7 +142,7 @@
                     </fieldset>
                 </div>
                 <div class="modal-footer">
-                    <button data-dismiss="modal" class="btn btn-primary" type="submit">Guardar</button>
+                    <button data-dismiss="modal" class="btn btn-primary" id="btnRegistrar" name="btnRegistrar" >Guardar</button>
 					<a data-dismiss="modal" class="btn" href="#">Cancelar</a>
                    
                 </div>
@@ -296,10 +303,65 @@
             </form>
         </div>
 
-       
+        <div class="modal hide" id="OK">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" onclick="javascript:window.location.reload();">×</button>
+            <h3>Notificaci&oacute;n</h3>
+            </div>
+        <div class="modal-body">
+    <p>Registro Exitosa</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary" data-dismiss="modal" onclick="javascript:window.location.reload();">Close</a>
+  </div>
+</div>
+
+<div class="modal hide" id="NO">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal">×</button>
+    <h3>Notificaci&oacute;n</h3>
+  </div>
+  <div class="modal-body">
+    <p>Registro Fallido</p>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn btn-primary" data-dismiss="modal">Close</a>
+  </div>
+</div>
+
         <script>
             $(function() {
                 $(".datepicker").datepicker();
+            });
+
+            function registrarUsuario(id,tipo){
+                    document.getElementById('userIdhidden').value=id;
+                    document.getElementById('userTypehidden').value=tipo;
+                    $("#modalCrearUsuario").modal('show');
+            }
+
+            $(document).ready(function(){
+
+
+                 $("#btnRegistrar").click(function(e){
+                    e.preventDefault();
+
+                    $.ajax({
+                        url:'<?php echo $ruta;?>usuario/registrar',
+                        type: 'POST',
+                        data: $('#usuarioform').serialize(),
+                        success:function(msj){
+                        if(msj == 'guardo'){
+                            $("#OK").modal('show');
+                            document.getElementById("userTypehidden").value="";
+                            $("#userIdhidden").val("");
+
+                        }else{
+                            $("#NO").modal('show');
+                        }
+                }
+            });
+        });
             });
         </script>
     </body>
