@@ -73,5 +73,56 @@ class docente extends  CI_Controller{
 
 	}
 
+	function docente_id()
+	{
+		if($this->input->is_ajax_request()){
+			$id = $this->input->post('id',true);
+
+			$rs = $this->doc->docente($id);
+
+			echo json_encode($rs);
+		}else{
+			redirect(base_url().'docente/', 'refresh');
+		}
+	}
+
+	function editar()
+	{
+
+		if($this->input->is_ajax_request()){
+			
+			
+			if($_POST['nombresE']!=""  && $_POST['apellidosE']!="" && $_POST['num_docE']!="" &&
+			 $_POST['pago_horaE']!="" && $_POST['fec_ingE']!="" && $_POST['horasE']!=""){
+				$docente = array(
+						'id' => $this->input->post('iddocente',true),
+						'nombre' => $this->input->post('nombresE',true),
+						'apellido' => $this->input->post('apellidosE',true),
+						'telefono' => $this->input->post('telefonoE',true),
+						'cargo' => 1,
+						'nro_documento' => $this->input->post('num_docE',true),
+						'fecIngreso' => $this->input->post('fec_ingE',true),
+						'email' => $this->input->post('emailE',true),
+						'sexo' => $this->input->post('sexoE',true),
+						'direccion' => $this->input->post('direccionE',true),
+						'distrito'=> $this->input->post('distritoE',true),
+						'especialidad' => $this->input->post('especialidadE',true),
+						'horasTrabajo'=> $this->input->post('horasE',true),
+						'PagoHora' =>$this->input->post('pago_horaE',true)
+				);
+				$rs=$this->doc->update_docente($docente);
+				if($rs)
+				{
+					echo "guardo";
+				}else{
+					echo "no guardo";
+				}
+			}else{
+				echo "no guardo";
+			}
+		}else{
+			redirect(base_url().'docente/', 'refresh');
+		}
 	
+	}
 }

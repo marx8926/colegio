@@ -66,8 +66,8 @@
                                     <td ><?php echo $lp->horastrabajo;?></td>
                                     <td ><?php echo $lp->especialidad;?></td>
                                     <td>
-                                        <a href="#modalEditarDocente" data-toggle="modal" class="btn btn-success"><i></i>Editar</a>
-                                        <a href="#modalVerDocente" data-toggle="modal" class="btn btn-info"><i></i>Ver</a>
+                                        <a onclick="editarDocente('<?php echo $lp->id;?>')"  data-toggle="modal" class="btn btn-success"><i></i>Editar</a>
+                                        <a onclick="verDocente('<?php echo $lp->id;?>')" data-toggle="modal" class="btn btn-info"><i></i>Ver</a>
                                     </td>
                                 </tr>
                              <?php endforeach;?>
@@ -87,79 +87,80 @@
         <button data-dismiss="modal" class="close" type="button">&times;</button>
         <h3>Editar Docente</h3>
     </div>
-    <form action="" class="form-horizontal" id="editar" name="editar">
+    <form action="" class="form-horizontal" id="editar" name="editar" method="post">
+        <input type="hidden" name="iddocente" id="iddocente">
         <div class="modal-body">
             <fieldset>
                 <div class="span5" style="margin-left:0; width:450px;">
                     <div class="control-group">
                         <label class="control-label" for="nombres">Nombres</label>
                         <div class="controls">
-                            <input class="input-large" id="nombres" name="nombres" type="text">
+                            <input class="input-large" id="nombresE" name="nombresE" type="text">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="selectDoc">Tipo de Documento</label>
                         <div class="controls">
-                            <select id="selectDoc" name="selectDoc" class="input-large">
-                                <option>1</option>
-                                <option>2</option>
-                                <option>3</option>
-                                <option>4</option>
-                                <option>5</option>
+                            <select id="selectDocE" name="selectDocE" class="input-large">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
                             </select>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="sexo">Sexo</label>
                         <div class="controls">
-                            <input class="input-large" id="sexo" name="sexo" type="text">
+                            <input class="input-large" id="sexoE" name="sexoE" type="text">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="direccion">Dirección</label>
                         <div class="controls">
-                            <input class="input-large" id="direccion" name="direccion" type="text">
+                            <input class="input-large" id="direccionE" name="direccionE" type="text">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="horas">Horas de Trabajo</label>
                         <div class="controls">
-                            <input class="input-small" min="1" id="horas" name="horas" type="number">
+                            <input class="input-small" min="1" id="horasE" name="horasE" type="number">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="fec_reg">Fecha de Registro</label>
                         <div class="controls">
-                            <input class="input-large datepicker" id="fec_reg" name="fec_reg" type="text">
+                            <input class="input-large datepicker" id="fec_regE" name="fec_regE" type="text">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="fec_ing">Fecha de Ingreso</label>
                         <div class="controls">
-                            <input class="input-large datepicker" id="fec_ing" name="fec_ing" type="text">
+                            <input class="input-large datepicker" id="fec_ingE" name="fec_ingE" type="text">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="selectDoc">Estado Civil</label>
                         <div class="controls">
-                            <select id="selectDoc" name="selectDoc" class="input-large">
-                                <option>Casado</option>
-                                <option>Soltero</option>
-                                <option>Viudo</option>
-                                <option>Divorciado</option>
+                            <select id="selectDocE" name="selectDocE" class="input-large">
+                                <option value="1">Casado</option>
+                                <option value="2">Soltero</option>
+                                <option value="3">Viudo</option>
+                                <option value="4">Divorciado</option>
                             </select>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="email">Email</label>
                         <div class="controls">
-                            <input class="input-large" id="email" name="email" type="email">
+                            <input class="input-large" id="emailE" name="emailE" type="email">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="selectEstado">Estado</label>
                         <div class="controls">
-                            <select id="selectError" class="input-large" id="selectEstado" name="selectEstado">
+                            <select id="selectError" class="input-large" id="selectEstadoE" name="selectEstadoE">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -173,19 +174,19 @@
                     <div class="control-group">
                         <label class="control-label" for="apellidos">Apellidos</label>
                         <div class="controls">
-                            <input class="input-large" id="apellidos" name="apellidos" type="text">
+                            <input class="input-large" id="apellidosE" name="apellidosE" type="text">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="telefono">Teléfono</label>
                         <div class="controls">
-                            <input class="input-large" id="telefono" name="telefono" type="text">
+                            <input class="input-large" id="telefonoE" name="telefonoE" type="text">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="selectDoc">Condición</label>
                         <div class="controls">
-                            <select id="selectDoc" name="selectDoc" class="input-large">
+                            <select id="selectDocE" name="selectDocE" class="input-large">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -197,25 +198,25 @@
                     <div class="control-group">
                         <label class="control-label" for="especialidad">Especialidad</label>
                         <div class="controls">
-                            <input class="input-large" id="especialidad" name="especialidad" type="text">
+                            <input class="input-large" id="especialidadE" name="especialidadE" type="text">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="pago_hora">Pago por Hora</label>
                         <div class="controls">
-                            <input class="input-large" id="pago_hora" name="pago_hora" type="text">
+                            <input class="input-large" id="pago_horaE" name="pago_horaE" type="text">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="num_doc">N° Documento</label>
                         <div class="controls">
-                            <input class="input-large" id="num_doc" name="num_doc" type="text">
+                            <input class="input-large" id="num_docE" name="num_docE" type="text">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="departamento">Departamento</label>
                         <div class="controls">
-                            <select id="departamento" name="departamento" class="input-large">
+                            <select id="departamentoE" name="departamentoE" class="input-large">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -227,7 +228,7 @@
                     <div class="control-group">
                         <label class="control-label" for="provincia">Provincia</label>
                         <div class="controls">
-                            <select id="provincia" name="provincia" class="input-large">
+                            <select id="provinciaE" name="provinciaE" class="input-large">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -239,7 +240,7 @@
                     <div class="control-group">
                         <label class="control-label" for="distrito">Distrito</label>
                         <div class="controls">
-                            <select id="distrito" name="distrito" class="input-large">
+                            <select id="distritoE" name="distritoE" class="input-large">
                                 <option>1</option>
                                 <option>2</option>
                                 <option>3</option>
@@ -252,7 +253,7 @@
             </fieldset>
         </div>
         <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-primary" type="submit">Guardar</button>
+            <button data-dismiss="modal" class="btn btn-primary" id="btnEditar">Guardar</button>
             <a data-dismiss="modal" class="btn" href="#">Cancelar</a>
         </div>
     </form>
@@ -427,61 +428,62 @@
         <h3>Datos Docente</h3>
     </div>
     <form action="" class="form-horizontal" id="ver" name="ver">
+        <input type="hidden" id="iddocentever" name="iddocentever"> 
         <div class="modal-body">
             <fieldset>
                 <div class="span5" style="margin-left:0; width:450px;">
                     <div class="control-group">
                         <label class="control-label" for="nombres">Nombres</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">Juan Carlos</span>
+                            <span class="input-large uneditable-input" id="nombresV" name="nombresV"></span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="selectDoc">Tipo de Documento</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">xxxxx</span>
+                            <span class="input-large uneditable-input" id="tipodocumentoV"></span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="sexo">Sexo</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">Masculino</span>
+                            <span class="input-large uneditable-input" id="sexoV" name="sexoV"></span>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="direccion">Dirección</label>
+                        <label class="control-label" for="direccion" >Dirección</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">Av. Nicolás de Piérola</span>
+                            <span class="input-large uneditable-input" id="direccionV" name="direccionV"></span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="horas">Horas de Trabajo</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">8 horas</span>
+                            <span class="input-large uneditable-input" id="horasV" name="horasV"></span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="fec_reg">Fecha de Registro</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">12/12/2013</span>
+                            <span class="input-large uneditable-input" id="fec_regV"></span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="fec_ing">Fecha de Ingreso</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">12/12/2013</span>
+                            <span class="input-large uneditable-input" id="fec_ingV"></span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="selectDoc">Estado Civil</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">Casado</span>
+                            <span class="input-large uneditable-input" id="selectEstadoV"></span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="email">Email</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">jperez@gmail.com</span>
+                            <span class="input-large uneditable-input" id="emailV"></span>
                         </div>
                     </div>
                 </div>
@@ -489,13 +491,13 @@
                     <div class="control-group">
                         <label class="control-label" for="apellidos">Apellidos</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">Perez Gomez</span>
+                            <span class="input-large uneditable-input" id="apellidosV"></span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="telefono">Teléfono</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">258998</span>
+                            <span class="input-large uneditable-input" id="telefonoV"></span>
                         </div>
                     </div>
                     <div class="control-group">
@@ -513,31 +515,31 @@
                     <div class="control-group">
                         <label class="control-label" for="pago_hora">Pago por Hora</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">S/.30.00</span>
+                            <span class="input-large uneditable-input" id="pago_horaV"></span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="num_doc">N° Documento</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">001</span>
+                            <span class="input-large uneditable-input" id="num_docV"></span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="departamento">Departamento</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">La Libertad</span>
+                            <span class="input-large uneditable-input" id="departamentoV">La Libertad</span>
                         </div>
                     </div>
                     <div class="control-group">
-                        <label class="control-label" for="provincia">Provincia</label>
+                        <label class="control-label" for="provincia" >Provincia</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">Trujillo</span>
+                            <span class="input-large uneditable-input" id="provinciaV">Trujillo</span>
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="distrito">Distrito</label>
                         <div class="controls">
-                            <span class="input-large uneditable-input">Trujillo</span>
+                            <span class="input-large uneditable-input" id="distritoV">Trujillo</span>
                         </div>
                     </div>
                 </div>
@@ -576,6 +578,77 @@
 </div>
 
 <script>
+
+
+     function editarDocente(id)
+    {
+        $("#iddocente").val(id);
+        $.ajax({
+                    url:'<?php echo $ruta;?>'+'docente/docente_id',
+                    type: 'POST',
+                    dataType: "json",
+                    data: "id="+id,
+                    success:function(msj){
+
+                        jQuery.each(msj,function(key, value){
+
+                            $("#nombresE").val(value['nombre']);
+                            $("#apellidosE").val(value['apellido']);
+                            $("#telefonoE").val(value['telefono']);
+                            $("#selectEstadoE").val(value['Estado']);
+                            $("#direccionE").val(value['direccion']);
+                            $("#emailE").val(value['email']);
+                            $("#especialidadE").val(value['especialidad']);
+                            $("#fec_ingE").val(value['fecIngreso'].substring(0,10));
+                            $("#fec_regE").val(value['fecRegistro'].substring(0,10));
+                            $("#horasE").val(value['horastrabajo']);
+                            $("#num_docE").val(value['nrodocumento']);
+                            $("#pago_horaE").val(value['pagoshoras']);
+                            $("#sexoE").val(value['sexo']);
+                            $("#selectDocE").val(value['tipodocumento']);
+
+                        });
+                        $("#modalEditarDocente").modal('show');
+
+                    }
+                });
+    }
+
+     function verDocente(id)
+    {
+        $("#iddocentever").val(id);               
+               
+                $.ajax({
+                    url:'<?php echo $ruta;?>'+'docente/docente_id',
+                    type: 'POST',
+                    dataType: "json",
+                    data: "id="+id,
+                    success:function(msj){
+
+                        jQuery.each(msj,function(key, value){
+                            $("#nombresV").text(value['nombre']);
+                            $("#apellidosV").text(value['apellido']);
+                            $("#telefonoV").text(value['telefono']);
+                            $("#selectEstadoV").text(value['Estado']);
+                            $("#direccionV").text(value['direccion']);
+                            $("#emailV").text(value['email']);
+                            $("#especialidadV").text(value['especialidad']);
+                            $("#fec_ingV").text(value['fecIngreso'].substring(0,10));
+                            $("#fec_regV").text(value['fecRegistro'].substring(0,10));
+                            $("#horasV").text(value['horastrabajo']);
+                            $("#num_docV").text(value['nrodocumento']);
+                            $("#pago_horaV").text(value['pagoshoras']);
+                            $("#sexoV").text(value['sexo']);
+                            $("#selectDocV").text(value['tipodocumento']);
+                        });
+                        $("#modalVerDocente").modal('show');
+
+                    }
+                });
+
+                return false;            
+        
+    }
     $(document).ready(function(){
         $("#tb_docente").dataTable({
             "oLanguage": {
@@ -589,6 +662,22 @@
                 url:'<?php echo $ruta;?>docente/registrar',
                 type: 'POST',
                 data: $('#registrar').serialize(),
+                success:function(msj){
+                    if(msj == 'guardo'){
+                        $("#OK").modal('show');
+                    }else{
+                        $("#NO").modal('show');
+                    }
+                }
+            });
+        });
+
+        $("#btnEditar").click(function(e){
+            e.preventDefault();
+            $.ajax({
+                url:'<?php echo $ruta;?>docente/editar',
+                type: 'POST',
+                data: $('#editar').serialize(),
                 success:function(msj){
                     if(msj == 'guardo'){
                         $("#OK").modal('show');

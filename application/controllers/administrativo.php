@@ -73,4 +73,59 @@ class administrativo extends  CI_Controller{
 
 	}
 
+	function administrativo_id()
+	{
+		if($this->input->is_ajax_request()){
+			$id = $this->input->post('id',true);
+
+			$rs = $this->doc->administrativo($id);
+
+			echo json_encode($rs);
+		}else{
+			redirect(base_url().'administrativo/', 'refresh');
+		}
+	}
+
+	function editar()
+	{
+		if($this->input->is_ajax_request()){
+			
+			
+			if($_POST['nombresE']!=""  && $_POST['apellidosE']!="" && $_POST['num_docE']!="" &&
+			 $_POST['pago_horaE']!="" && $_POST['fec_ingE']!="" && $_POST['horasE']!=""){
+				$docente = array(
+						'id' => $this->input->post('idadministrativo',true),
+						'nombre' => $this->input->post('nombresE',true),
+						'apellido' => $this->input->post('apellidosE',true),
+						'telefono' => $this->input->post('telefonoE',true),
+						'cargo' => 3,
+						'tipo_documento' => $this->input->post('selectTipoDocE', true),
+						'nro_documento' => $this->input->post('num_docE',true),
+						'fecIngreso' => $this->input->post('fec_ingE',true),
+						'email' => $this->input->post('emailE',true),
+						'sexo' => $this->input->post('sexoE',true),
+						'direccion' => $this->input->post('direccionE',true),
+						'distrito'=> $this->input->post('distritoE',true),
+						'especialidad' => $this->input->post('especialidadE',true),
+						'horasTrabajo'=> $this->input->post('horasE',true),
+						'PagoHora' =>$this->input->post('pago_horaE',true),
+						'estadocivil' => $this->input->post('selectEcivil',true),
+						'estado' => $this->input->post('selectEstadoE',true)
+				);
+
+				$rs=$this->doc->update_administrativo($docente);
+				if($rs)
+				{
+					echo "guardo";
+				}else{
+					echo "no guardo";
+				}
+			}else{
+				echo "no guardo";
+			}
+		}else{
+			redirect(base_url().'docente/', 'refresh');
+		}
+	}
+
 }
