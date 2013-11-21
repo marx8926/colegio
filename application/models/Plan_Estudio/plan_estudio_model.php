@@ -12,12 +12,24 @@ class plan_estudio_model extends CI_Model {
 		return $query->row();
 	}
 
+	function update_nivel($data)
+	{
+		$query = $this->db->query("exec spu_nivel ".$data['id'].",'".$data['nivel']."','".$data['activo']."'");
+		return $query->row();
+	}
+
 	function insert_ciclo($data){
 		
 		$query = $this->db->query("exec spi_ciclo '".$data['ciclo']."',".$data['nivel']);
 		return $query->row();
 	}
 	
+	function update_ciclo($data)
+	{
+		$query = $this->db->query("exec spu_ciclo ".$data['id'].",'".$data['nivel']."','".$data['activo']."'");
+		return $query->row();
+	}
+
 	function insert_grado($data){
 		
 		$query = $this->db->query("exec spi_grado ".$data['selectNivel_G'].",".$data['selectCiclo_G'].",'".$data['grado']."'");

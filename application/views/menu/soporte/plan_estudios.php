@@ -137,7 +137,7 @@
 										<tr class="odd gradeX">
 											<td><?php echo $ln->nombre ?></td>
 											<td><?php echo $ln->Estado ?></td>
-												<td><a href="#modalEditarNivel" data-toggle="modal" class="btn btn-success" name="btnEditar" id="btnEditar"><i></i>Editar</a>
+												<td><a onclick="editarNivel(<?php echo $ln->id; ?>, '<?php echo $ln->nombre; ?>', <?php echo $ln->estadoint; ?>)" data-toggle="modal" class="btn btn-success" name="btnEditar" id="btnEditar"><i></i>Editar</a>
 											</td>												
 										</tr>
 										<?php endforeach;
@@ -182,7 +182,7 @@
 										<tr class="odd gradeX">
 											<td><?php echo $lc->nombre ?></td>
 											<td><?php echo $lc->Estado ?></td>
-												<td><a href="#modalEditarCiclo" data-toggle="modal" class="btn btn-success" id="btnEditarCiclo" name="btnEditarCiclo"><i></i>Editar</a>
+												<td><a onclick="editarCiclo('<?php echo $lc->id; ?>')" data-toggle="modal" class="btn btn-success" ><i></i>Editar</a>
 											</td>												
 										</tr>
 										<?php endforeach;
@@ -241,7 +241,7 @@
 										<tr class="odd gradeX">
 											<td><?php echo $lg->nombre ?></td>
 											<td><?php echo $lg->Estado ?></td>
-											<td><a href="#modalEditarGrado" data-toggle="modal" class="btn btn-success" id="btnEditarGrado" name="btnEditarGrado"><i></i>Editar</a>
+											<td><a onclick="editarGrado('<?php echo $lg->id; ?>')" data-toggle="modal" class="btn btn-success" id="btnEditarGrado" name="btnEditarGrado"><i></i>Editar</a>
 											</td>
 										</tr>
 										<?php endforeach;
@@ -345,7 +345,8 @@
         <button data-dismiss="modal" class="close" type="button">&times;</button>
         <h3>Editar Asignacion</h3>
     </div>
-    <form action="" class="form-horizontal">
+    <form action="" class="form-horizontal" id="formeditarasignacion" name="formeditarasignacion" method="post">
+    	<input type="hidden" name="ideditarasignacion" id="ideditarasignacion">
         <div class="modal-body">
             <fieldset>
                 <div class="span5" style="margin-left:0px; width:450px;">
@@ -387,22 +388,23 @@
         <button data-dismiss="modal" class="close" type="button">&times;</button>
         <h3>Editar Nivel</h3>
     </div>
-    <form action="" class="form-horizontal">
+    <form action="" class="form-horizontal" id="formEditarNivel" name="formEditarNivel" method="post">
+    	<input type="hidden" id="ideditarnivel" name="ideditarnivel">
         <div class="modal-body">
             <fieldset>
                 <div class="span5" style="margin-left:0px; width:450px;">
                     <div class="control-group">
                         <label class="control-label" for="cboEstadoNivel">Nivel</label>
                         <div class="controls">
-                            <input class="input-large" id="focusedInput" type="text" name="EditarNivel" id="EditarNivel">
+                            <input class="input-large" type="text" name="EditarNivel" id="EditarNivel">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="cboEstadoNivel">Estado</label>
                         <div class="controls">
                             <select id="cboEstadoNivel" name="cboEstadoNivel" class="input-large">
-                                <option>Activo</option>
-                                <option>No Activo</option>
+                                <option value="1">Activo</option>
+                                <option value="0">No Activo</option>
                             </select>
                         </div>
                     </div>
@@ -411,7 +413,7 @@
             </fieldset>
         </div>
         <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-primary" type="submit">Guardar</button>
+            <button data-dismiss="modal" class="btn btn-primary" id="btnEditarNivel">Guardar</button>
             <a data-dismiss="modal" class="btn" href="#">Cancelar</a>
         </div>
     </form>
@@ -422,7 +424,8 @@
         <button data-dismiss="modal" class="close" type="button">&times;</button>
         <h3>Editar Ciclo</h3>
     </div>
-    <form action="" class="form-horizontal">
+    <form action="" class="form-horizontal" id="formEditarCiclo" name="formEditarCiclo" method="post">
+    	<input type="hidden" id="ideditarciclo" name="ideditarciclo">
         <div class="modal-body">
             <fieldset>
                 <div class="span5" style="margin-left:0px; width:450px;">
@@ -457,7 +460,8 @@
         <button data-dismiss="modal" class="close" type="button">&times;</button>
         <h3>Editar Curso</h3>
     </div>
-    <form action="" class="form-horizontal">
+    <form action="" class="form-horizontal" id="formeditarcurso" name="formeditarcurso" method="post">
+    	<input type="hidden" id="ideditarcurso" name="ideditarcurso">
         <div class="modal-body">
             <fieldset>
                 <div class="span5" style="margin-left:0px; width:450px;">
@@ -492,7 +496,9 @@
         <button data-dismiss="modal" class="close" type="button">&times;</button>
         <h3>Citerio Evaluacion</h3>
     </div>
-    <form action="" class="form-horizontal">
+    <form action="" class="form-horizontal" id="formcriterioevaluacion" name="formcriterioevaluacion" method="post">
+    	<input type="hidden" id="idcriterioevaluacion" name="idcriterioevaluacion">
+
         <div class="modal-body">
             <fieldset>
                 <div class="span5" style="margin-left:0px; width:450px;">
@@ -559,6 +565,30 @@
 
 <script>
 
+	function editarGrado(id)
+	{
+
+	}
+
+	function editarCiclo(id)
+	{
+		$("#modalEditarCiclo").modal('show');
+		
+		console.log('editarCiclo');
+	}
+
+	function editarNivel(id, nombre, estado)
+	{
+		$("#ideditarnivel").val(id);
+		$("#EditarNivel").val(nombre);
+		$("#cboEstadoNivel").val(estado);
+
+		$("#modalEditarNivel").modal('show');
+
+	}
+
+
+
     $(document).ready(function(){
     	
     	//Lista Combo Por Default
@@ -594,6 +624,24 @@
                 "sLengthMenu": "_MENU_ filas por pagina"
             }
         });
+
+        $("#btnEditarNivel").click(function(e){
+            e.preventDefault();
+            $.ajax({
+                url:'<?php echo $ruta;?>plan_estudio/editar_nivel',
+                type: 'POST',
+                data: $('#formEditarNivel').serialize(),
+                success:function(msj){
+                    if(msj == 'guardo'){
+                        $("#OK").modal('show');
+                        document.getElementById("nivel").value="";
+                    }else{
+                        $("#NO").modal('show');
+                    }
+                }
+            });
+        });
+
 
         $("#btnRegistrarNivel").click(function(e){
             e.preventDefault();

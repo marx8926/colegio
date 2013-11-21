@@ -48,6 +48,32 @@ class plan_estudio extends CI_Controller {
 		}
 	}
 	
+
+	function editar_nivel()
+	{
+		if($this->input->is_ajax_request()){
+			
+			if($_POST['EditarNivel']!=""){
+				$nivel = array(
+						'nivel' => $this->input->post('EditarNivel',true),
+						'activo' => $this->input->post('cboEstadoNivel',true),
+						'id' => $this->input->post('ideditarnivel', true)
+				);
+				$rs=$this->pe->update_nivel($nivel);
+				if($rs)
+				{
+					echo "guardo";
+				}else{
+					echo "no guardo";
+				}
+			}else{
+				echo "no guardo";
+			}
+			
+		}else{
+			redirect(base_url().'plan_estudio/', 'refresh');
+		}
+	}
 	function registrar_ciclo(){
 		if($this->input->is_ajax_request()){
 			$this->form_validation->set_rules('selectNivel_C','selectNivel_C','requiered');

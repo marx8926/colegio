@@ -1,3 +1,4 @@
+
 <?php $ruta = base_url();?>
         <div class="container-fluid">
             <div class="row-fluid">
