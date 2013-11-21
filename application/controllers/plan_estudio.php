@@ -103,6 +103,31 @@ class plan_estudio extends CI_Controller {
 		}
 	}
 
+	function editar_ciclo()
+	{
+		if($this->input->is_ajax_request()){
+			
+			if($_POST['EditarCiclo']!=""){
+				$nivel = array(
+						'ciclo' => $this->input->post('EditarCiclo',true),
+						'activo' => $this->input->post('cboEstadoCiclo',true),
+						'id' => $this->input->post('ideditarciclo', true)
+				);
+				$rs=$this->pe->update_ciclo($nivel);
+				if($rs)
+				{
+					echo "guardo";
+				}else{
+					echo "no guardo";
+				}
+			}else{
+				echo "no guardo";
+			}
+			
+		}else{
+			redirect(base_url().'plan_estudio/', 'refresh');
+		}
+	}
 	function listar_ciclo_byNivel(){
 		if($this->input->is_ajax_request()){
 			echo json_encode($this->pe->listar_ciclo_byNivel_Id($this->input->post('id_nivel',true)));
@@ -153,6 +178,35 @@ class plan_estudio extends CI_Controller {
 		}
 	}
 
+	function editar_grado()
+	{
+		if($this->input->is_ajax_request()){
+			
+			if($_POST['EditarGrado']!=""){
+				$nivel = array(
+						'id' => $this->input->post('ideditargrado', true),
+						'grado' => $this->input->post('EditarGrado',true),
+						'activo' => $this->input->post('cboEstadoGrado',true),
+						'nivel' => $this->input->post('idnivelgrado', true),
+						'ciclo' => $this->input->post('idciclogrado', true)
+				);
+				$rs=$this->pe->update_grado($nivel);				
+
+				if($rs)
+				{
+					echo "guardo";
+				}else{
+					echo "no guardo";
+				}
+			}else{
+				echo "no guardo";
+			}
+			
+		}else{
+			redirect(base_url().'plan_estudio/', 'refresh');
+		}
+	}
+
 	function registrar_curso(){
 		if($this->input->is_ajax_request()){
 			$this->form_validation->set_rules('nombre','nombre','requiered');
@@ -177,6 +231,34 @@ class plan_estudio extends CI_Controller {
 		}else{
 			redirect(base_url().'plan_estudio/', 'refresh');
 		}
+	}
+
+	function editar_curso()
+	{
+		if($this->input->is_ajax_request()){
+			
+			if($_POST['EditarCurso']!=""){
+				$nivel = array(
+						'id' => $this->input->post('ideditarcurso', true),
+						'nombre' => $this->input->post('EditarCurso',true),
+						'estado' => $this->input->post('cboEstadoCurso',true)
+				);
+				$rs=$this->pe->update_curso($nivel);				
+
+				if($rs)
+				{
+					echo "guardo";
+				}else{
+					echo "no guardo";
+				}
+			}else{
+				echo "no guardo";
+			}
+			
+		}else{
+			redirect(base_url().'plan_estudio/', 'refresh');
+		}
+
 	}
 
 	function registrar_curso_grado(){

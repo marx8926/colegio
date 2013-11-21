@@ -182,7 +182,7 @@
 										<tr class="odd gradeX">
 											<td><?php echo $lc->nombre ?></td>
 											<td><?php echo $lc->Estado ?></td>
-												<td><a onclick="editarCiclo('<?php echo $lc->id; ?>')" data-toggle="modal" class="btn btn-success" ><i></i>Editar</a>
+												<td><a onclick="editarCiclo(<?php echo $lc->id; ?>, '<?php echo $lc->nombre;?>', <?php echo $lc->estadoint;?>)" data-toggle="modal" class="btn btn-success" ><i></i>Editar</a>
 											</td>												
 										</tr>
 										<?php endforeach;
@@ -241,7 +241,8 @@
 										<tr class="odd gradeX">
 											<td><?php echo $lg->nombre ?></td>
 											<td><?php echo $lg->Estado ?></td>
-											<td><a onclick="editarGrado('<?php echo $lg->id; ?>')" data-toggle="modal" class="btn btn-success" id="btnEditarGrado" name="btnEditarGrado"><i></i>Editar</a>
+
+											<td><a onclick="editarGrado(<?php echo $lg->id; ?>, '<?php echo $lg->nombre; ?>' , <?php echo $lg->estadoint; ?> , <?php echo $lg->ciclo; ?>, <?php echo $lg->nivel?>)" data-toggle="modal" class="btn btn-success" id="btnEditarGrado" name="btnEditarGrado"><i></i>Editar</a>
 											</td>
 										</tr>
 										<?php endforeach;
@@ -307,7 +308,7 @@
 										<tr class="odd gradeX">
 											<td><?php echo $lcu->nombre ?></td>
 											<td><?php echo $lcu->Estado ?></td>
-											<td><a href="#modalEditarCurso" data-toggle="modal" class="btn btn-success" id="btnEditarCurso" name="btnEditarCurso"><i></i>Editar</a>
+											<td><a onclick="editarCurso(<?php echo $lcu->id; ?>, '<?php echo $lcu->nombre ?>' , <?php echo $lcu->estadoint; ?>)" data-toggle="modal" class="btn btn-success" id="btnEditarCurso" name="btnEditarCurso"><i></i>Editar</a>
 												<a href="#modalCriterioEvaluacion" data-toggle="modal" class="btn btn-info" name="btnCriterio" id="btnCriterio"><i></i>Criterio Evaluacion</a>
 											</td>
 										</tr>
@@ -432,15 +433,15 @@
                     <div class="control-group">
                         <label class="control-label" for="cboEstadoCiclo">Ciclo</label>
                         <div class="controls">
-                            <input class="input-large" id="focusedInput" type="text" name="EditarCiclo" id="EditarCiclo">
+                            <input class="input-large" type="text" name="EditarCiclo" id="EditarCiclo">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="cboEstadoCiclo">Estado</label>
                         <div class="controls">
                             <select id="cboEstadoCiclo" name="cboEstadoCiclo" class="input-large">
-                                <option>Activo</option>
-                                <option>No Activo</option>
+                                <option value="1">Activo</option>
+                                <option value="0">No Activo</option>
                             </select>
                         </div>
                     </div>
@@ -449,7 +450,7 @@
             </fieldset>
         </div>
         <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-primary" type="submit">Guardar</button>
+            <button data-dismiss="modal" class="btn btn-primary" id="btnEditarCicloForm" name="btnEditarCicloForm">Guardar</button>
             <a data-dismiss="modal" class="btn" href="#">Cancelar</a>
         </div>
     </form>
@@ -468,15 +469,15 @@
                     <div class="control-group">
                         <label class="control-label" for="selectDoc">Curso</label>
                         <div class="controls">
-                            <input class="input-large" id="focusedInput" type="text" name="EditarCurso" id="EditarCurso">
+                            <input class="input-large" type="text" name="EditarCurso" id="EditarCurso">
                         </div>
                     </div>
                     <div class="control-group">
                         <label class="control-label" for="cboEstadoCurso">Estado</label>
                         <div class="controls">
                             <select id="cboEstadoCurso" name="cboEstadoCurso" class="input-large" >
-                                <option>Activo</option>
-                                <option>No Activo</option>
+                                <option value="1">Activo</option>
+                                <option value="0">No Activo</option>
                             </select>
                         </div>
                     </div>
@@ -485,7 +486,7 @@
             </fieldset>
         </div>
         <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-primary" type="submit">Guardar</button>
+            <button data-dismiss="modal" class="btn btn-primary" id="btnEditarCursoForm">Guardar</button>
             <a data-dismiss="modal" class="btn" href="#">Cancelar</a>
         </div>
     </form>
@@ -536,6 +537,44 @@
     </form>
 </div>
 <!--*************************************************************************************-->
+<div id="modalEditarGrado" class="modal hide" style="width: 550px;left: 50%;">
+    <div class="modal-header">
+        <button data-dismiss="modal" class="close" type="button">&times;</button>
+        <h3>Editar Curso</h3>
+    </div>
+    <form action="" class="form-horizontal" id="formeditargrado" name="formeditargrado" method="post">
+    	<input type="hidden" id="ideditargrado" name="ideditargrado">
+    	<input type="hidden" id="idciclogrado" name="idciclogrado">
+    	<input type="hidden" id="idnivelgrado" name="idnivelgrado">
+        <div class="modal-body">
+            <fieldset>
+                <div class="span5" style="margin-left:0px; width:450px;">
+                    <div class="control-group">
+                        <label class="control-label" for="selectDoc">Grado</label>
+                        <div class="controls">
+                            <input class="input-large" type="text" name="EditarGrado" id="EditarGrado">
+                        </div>
+                    </div>
+                    <div class="control-group">
+                        <label class="control-label" for="cboEstadoCurso">Estado</label>
+                        <div class="controls">
+                            <select id="cboEstadoGrado" name="cboEstadoGrado" class="input-large" >
+                                <option value="1">Activo</option>
+                                <option value="0">No Activo</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                </div>
+            </fieldset>
+        </div>
+        <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-primary" id="btnEditarGradoForm">Guardar</button>
+            <a data-dismiss="modal" class="btn" href="#">Cancelar</a>
+        </div>
+    </form>
+</div>
+<!--*************************************************************************************-->
 
 <div class="modal hide" id="OK">
   <div class="modal-header">
@@ -565,16 +604,26 @@
 
 <script>
 
-	function editarGrado(id)
+	function editarGrado(id, nombre, estado, ciclo, nivel)
 	{
+		$("#ideditargrado").val(id);
+		$("#EditarGrado").val(nombre);
+		$("#cboEstadoGrado").val(estado);
+		$("#idnivelgrado").val(nivel);
+		$("#idciclogrado").val(ciclo);
 
+		$("#modalEditarGrado").modal('show');
 	}
 
-	function editarCiclo(id)
+	function editarCiclo(id, nombre, estado)
 	{
+		$("#ideditarciclo").val(id);
+		$("#EditarCiclo").val(nombre);
+		$("#cboEstadoNivel").val(estado);
+
 		$("#modalEditarCiclo").modal('show');
 		
-		console.log('editarCiclo');
+		
 	}
 
 	function editarNivel(id, nombre, estado)
@@ -585,6 +634,15 @@
 
 		$("#modalEditarNivel").modal('show');
 
+	}
+
+	function editarCurso(id, nombre, estado)
+	{
+
+		$("#ideditarcurso").val(id);
+		$("#EditarCurso").val(nombre);
+		$("#cboEstadoCurso").val(estado);
+		$("#modalEditarCurso").modal('show');
 	}
 
 
@@ -680,6 +738,23 @@
             });
         });
 
+        $("#btnEditarCicloForm").click(function(e){
+            e.preventDefault();
+            $.ajax({
+                url:'<?php echo $ruta;?>plan_estudio/editar_ciclo',
+                type: 'POST',
+                data: $('#formEditarCiclo').serialize(),
+                success:function(msj){
+                    if(msj == 'guardo'){
+                        $("#OK").modal('show');
+                        document.getElementById("nivel").value="";
+                    }else{
+                        $("#NO").modal('show');
+                    }
+                }
+            });
+        });
+
         $("#btnRegistarGrado").click(function(e){
             e.preventDefault();
             var nombre = $("#grado").val().trim();
@@ -693,6 +768,24 @@
                     if(msj == 'guardo'){
                         $("#OK").modal('show');
                         document.getElementById("grado").value="";
+                    }else{
+                        $("#NO").modal('show');
+                    }
+                }
+            });
+        });
+
+        
+        $("#btnEditarGradoForm").click(function(e){
+            e.preventDefault();
+            $.ajax({
+                url:'<?php echo $ruta;?>plan_estudio/editar_grado',
+                type: 'POST',
+                data: $('#formeditargrado').serialize(),
+                success:function(msj){
+                    if(msj == 'guardo'){
+                        $("#OK").modal('show');
+                        document.getElementById("nivel").value="";
                     }else{
                         $("#NO").modal('show');
                     }
@@ -717,6 +810,24 @@
                 }
             });
         });
+
+        $("#btnEditarCursoForm").click(function(e){
+            e.preventDefault();
+            $.ajax({
+                url:'<?php echo $ruta;?>plan_estudio/editar_curso',
+                type: 'POST',
+                data: $('#formeditarcurso').serialize(),
+                success:function(msj){
+                    if(msj == 'guardo'){
+                        $("#OK").modal('show');
+                        document.getElementById("nivel").value="";
+                    }else{
+                        $("#NO").modal('show');
+                    }
+                }
+            });
+        });
+
         
         // Agregar Curso - Grado
         $("#btnAgregar").click(function(e){

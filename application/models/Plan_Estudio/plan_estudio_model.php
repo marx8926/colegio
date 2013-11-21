@@ -26,7 +26,7 @@ class plan_estudio_model extends CI_Model {
 	
 	function update_ciclo($data)
 	{
-		$query = $this->db->query("exec spu_ciclo ".$data['id'].",'".$data['nivel']."','".$data['activo']."'");
+		$query = $this->db->query("exec spu_ciclo ".$data['id'].",'".$data['ciclo']."','".$data['activo']."'");
 		return $query->row();
 	}
 
@@ -36,12 +36,22 @@ class plan_estudio_model extends CI_Model {
 		return $query->row();
 	}
 
+	function update_grado($data)
+	{
+		$query = $this->db->query("exec spu_grado ".$data['id'].",'".$data['grado']."','".$data['activo']."',".$data['ciclo'].",".$data['nivel']);
+		return $query->row();
+	}
 	function insert_curso($data){
 		
 		$query = $this->db->query("exec spi_curso '".$data['nombre']."'");
 		return $query->row();
 	}
 
+	function update_curso($data)
+	{
+		$query = $this->db->query("exec spu_curso ".$data['id'].",'".$data['nombre']."','".$data['estado']."'");
+		return $query->row();
+	}
 	function insert_curso_grado($data){
 		
 		$query = $this->db->query("exec spi_curso_grado ".
