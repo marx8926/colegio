@@ -65,6 +65,40 @@ class colegio extends  CI_Controller{
 
 	}
 
+	function editar(){
+		if($this->input->is_ajax_request()){
+			
+			if($_POST['nroRegistro']!=""  && $_POST['coordinador']!="" && $_POST['secretario']!="" && $_POST['director']!="" && $_POST['res_academica']!="" && $_POST['nombre']!="" && $_POST['direccion']!="" ){
+				$colegio = array(
+						'id' => $this->input->post('id_colegio', true),
+						'nroRegistro' => $this->input->post('nroRegistro',true),
+						'res_academica' => $this->input->post('res_academica',true),
+						'direccion' => $this->input->post('direccion',true),
+						'nombre' => $this->input->post('nombre',true),
+						'telefono' => $this->input->post('telefono',true),
+						'director' => $this->input->post('director',true),
+						'coordinador' => $this->input->post('coordinador',true),
+						'secretario' => $this->input->post('secretario',true),
+						'paginaweb' => $this->input->post('paginaweb',true),
+						'fechaCreacion' => $this->input->post('fecCreacion',true)
+				);
+				$rs=$this->col->update($colegio);
+				if($rs)
+				{
+					echo "guardo";
+				}else{
+					echo "no guardo";
+				}
+			}else{
+				echo "no guardo";
+			}
+			
+		}else{
+			redirect(base_url().'colegio/', 'refresh');
+		}
+
+	}
+
 	function registrar_periodo(){
 
 		if($this->input->is_ajax_request()){

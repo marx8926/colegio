@@ -11,6 +11,11 @@ class colegio_model extends CI_Model {
 		return $query->row();
 	}
 
+	function update_colegio($data){
+		$query = $this->db->query("exec spu_colegio '".$data['id']."','".$data['nroRegistro']."','".$data['nombre']."','".$data['direccion']."','".$data['telefono']."','".$data['director']."','".$data['coordinador']."','".$data['secretario']."','".$data['res_academica']."','".$data['paginaweb']."','".$data['fechaCreacion']."'");
+		return $query->row();
+	}
+
 	function insert_periodo($data){
 		$query = $this->db->query("exec spi_colegioperiodo '".$data['id']."',".$data['periodo'].",'".$data['fecInicio']."','".$data['fecFin']."'");
 		return $query->row();

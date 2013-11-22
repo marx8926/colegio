@@ -252,6 +252,24 @@
             });
         });
 
+
+        $("#btnEditar_Colegio").click(function(e){
+            e.preventDefault();
+
+            $.ajax({
+                url:'<?php echo $ruta;?>colegio/editar',
+                type: 'POST',
+                data: $('#frmColegio').serialize(),
+                success:function(msj){
+                    if(msj == 'guardo'){
+                        $("#OK").modal('show');
+                    }else{
+                        $("#NO").modal('show');
+                    }
+                }
+            });
+        });
+
         $("#btnGuardar_Periodo").click(function(e){
             var periodo = $('#cbotipoPeriodoEvaluacion').val();
             var fecInicio = $('#fecInicio').val();
