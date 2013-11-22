@@ -104,7 +104,7 @@
 												<td><?php echo $lcug->grado; ?></td>
 												<td><?php echo $lcug->curso; ?></td>
 												<td>
-													<a href="#modalEditarAsignacion" data-toggle="modal" class="btn btn-success" name="btnEditar" id="btnEditar"><i></i>Editar</a>
+													<a onclick="editar_curso_grado( <?php echo $lcug->id; ?>, <?php echo $lcug->int_grado_id; ?>, <?php echo $lcug->int_ciclo_id; ?>, <?php echo $lcug->int_nivel_id; ?>)" data-toggle="modal" class="btn btn-success" name="btnEditar" id="btnEditar"><i></i>Editar</a>
 												</td>
 											</tr>
 										<?php endforeach;
@@ -347,7 +347,8 @@
         <h3>Editar Asignacion</h3>
     </div>
     <form action="" class="form-horizontal" id="formeditarasignacion" name="formeditarasignacion" method="post">
-    	<input type="hidden" name="ideditarasignacion" id="ideditarasignacion">
+    	<input type="hidden" name="ideditarasignacionciclo" id="ideditarasignacionciclo">
+    	<input type="hidden" name="ideditarasignacionnivel" id="ideditarasignacionnivel">
         <div class="modal-body">
             <fieldset>
                 <div class="span5" style="margin-left:0px; width:450px;">
@@ -356,11 +357,7 @@
                         <label class="control-label" for="cboEditarAsignacionGrados">Grados</label>
                         <div class="controls">
                             <select id="cboEditarAsignacionGrados" name="cboEditarAsignacionGrados" class="input-large">
-                                <option>1°</option>
-                                <option>2°</option>
-                                <option>3°</option>
-                                <option>4°</option>
-                                <option>5°</option>
+                                
                             </select>
                         </div>
                     </div>
@@ -368,9 +365,7 @@
                         <label class="control-label" for="cboEditarAsignacionCurso">Curso</label>
                         <div class="controls">
                             <select id="cboEditarAsignacionCurso" name="cboEditarAsignacionCurso" class="input-large">
-                                <option>Comunicacion Integral</option>
-                                <option>Logico Matematico</option>
-                              
+                                                              
                             </select>
                         </div>
                     </div>
@@ -378,7 +373,7 @@
             </fieldset>
         </div>
         <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-primary" type="submit">Guardar</button>
+            <button data-dismiss="modal" class="btn btn-primary" id="btneditarasignacioncursoform">Guardar</button>
             <a data-dismiss="modal" class="btn" href="#">Cancelar</a>
         </div>
     </form>
@@ -645,9 +640,56 @@
 		$("#modalEditarCurso").modal('show');
 	}
 
+	function all_cursos_grados()
+	{
+		$.ajax({
+                url:'<?php echo $ruta;?>plan_estudio/all_grados',
+                type: 'POST',
+                datatype: "json",
+                success:function(msj){
+
+                	data = $.parseJSON(msj);
+                	
+               		$.each(data,function(key, value){
+                           	$opt = $('<option />');
+							$opt.val(value.id);
+							$opt.text(value.nombre);
+							$('#cboEditarAsignacionGrados').append($opt);
+                        });
+                }
+            });
+
+		$.ajax({
+                url:'<?php echo $ruta;?>plan_estudio/all_cursos',
+                type: 'POST',
+                datatype: "json",
+                success:function(msj){
+                	data = $.parseJSON(msj);
+                	
+               		$.each(data,function(key, value){
+                           	$opt = $('<option />');
+							$opt.val(value.id);
+							$opt.text(value.nombre);
+							$('#cboEditarAsignacionCurso').append($opt);
+                        });
+                }
+            });
+	}
+
+	function editar_curso_grado(idcurso, idgrado, idciclo, idnivel)
+	{
+		$("#ideditarasignacionciclo").val(idciclo);
+		$("#ideditarasignacionnivel").val(idnivel);
+		$("#cboEditarAsignacionGrados").val(idgrado);
+		$("#cboEditarAsignacionCurso").val(idcurso);
+
+		$("#modalEditarAsignacion").modal("show");
+	}
 
 
     $(document).ready(function(){
+
+    	all_cursos_grados();
     	
     	//Lista Combo Por Default
     	cargarCiclo_byNivel_G();
@@ -840,6 +882,24 @@
                 url:'<?php echo $ruta;?>plan_estudio/registrar_curso_grado',
                 type: 'POST',
                 data: "nivel="+nivel+"&ciclo="+ciclo+"&grado="+grado+"&curso="+curso,
+                success:function(msj){
+                    if(msj == 'guardo'){
+                        $("#OK").modal('show');
+                    }else{
+                        $("#NO").modal('show');
+                    }
+                }
+            });
+        });
+
+
+        $("#btneditarasignacioncursoform").click(function(e){
+        	e.preventDefault();
+
+        	$.ajax({
+                url:'<?php echo $ruta;?>plan_estudio/editar_curso_grado',
+                type: 'POST',
+                data: $("#formeditarasignacion").serialize(),
                 success:function(msj){
                     if(msj == 'guardo'){
                         $("#OK").modal('show');

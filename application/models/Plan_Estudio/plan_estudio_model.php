@@ -59,6 +59,14 @@ class plan_estudio_model extends CI_Model {
 		return $query->row();
 	}
 
+	function update_curso_grado($data){
+		
+		$query = $this->db->query("exec spu_cursogrado ".
+			$data['curso'].",".$data['grado'].",".$data['ciclo'].",".$data['nivel']);
+		return $query->row();
+	}
+
+
 	function update(){
 
 	}

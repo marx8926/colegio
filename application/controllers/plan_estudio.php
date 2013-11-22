@@ -293,6 +293,51 @@ class plan_estudio extends CI_Controller {
 		}
 	}
 
+	function editar_curso_grado(){
+		if($this->input->is_ajax_request()){
+
+
+			
+			if($_POST['ideditarasignacionnivel']!="" && $_POST['ideditarasignacionciclo']!="" && $_POST['cboEditarAsignacionGrados']!="" && $_POST['cboEditarAsignacionCurso']){
+				$curso = array(
+						'curso' => $this->input->post('cboEditarAsignacionCurso',true),
+						'grado' => $this->input->post('cboEditarAsignacionGrados',true),
+						'ciclo' => $this->input->post('ideditarasignacionciclo',true),
+						'nivel' => $this->input->post('ideditarasignacionnivel',true)						
+				);
+				$rs=$this->pe->update_curso_grado($curso);
+				if($rs)
+				{
+					echo "guardo";
+				}else{
+					echo "no guardo";
+				}
+			}else{
+				echo "no guardo";
+			}
+			
+		}else{
+			redirect(base_url().'plan_estudio/', 'refresh');
+		}
+	}
+
+	function all_cursos()
+	{
+		if($this->input->is_ajax_request()){
+			echo json_encode($this->pe->listar_todo_curso());
+		}else{
+			redirect(base_url().'plan_estudio/', 'refresh');
+		}
+	}
+
+	function all_grados()
+	{
+		if($this->input->is_ajax_request()){
+			echo json_encode($this->pe->listar_todo_grado());
+		}else{
+			redirect(base_url().'plan_estudio/', 'refresh');
+		}
+	}
 }
 
 ?>
